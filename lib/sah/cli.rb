@@ -25,6 +25,9 @@ module Sah
     sah browse PROJECT/REPO
     \x5# browse PROJECT/REPO
 
+    sah browse --upstream
+    \x5# browse upstream of current repository
+
     sah browse --branch
     \x5# browse branch list in current repository
 
@@ -40,6 +43,7 @@ module Sah
     sah browse --pull-request PULL_REQUEST
     \x5# browse PULL_REQUEST in current repository
     LONG_DESCRIPTION
+    method_option :upstream, aliases: "-u", desc: "Show upstream repository"
     method_option :branch, aliases: "-b", desc: "Show branch(es)"
     method_option :commit, aliases: "-c", desc: "Show commit"
     method_option :"pull-request", aliases: "-r", desc: "Show pull request(s)"
@@ -47,6 +51,10 @@ module Sah
       if arg
         repository_slug, project_key = arg.split("/").reverse
         project_key ||= "~#{config.user}"
+      elsif options[:upstream]
+        upstream = upstream_repository
+        project_key = upstream["origin"]["project"]["key"]
+        repository_slug = upstream["origin"]["slug"]
       else
         remote_url = `git config --get remote.origin.url`.chomp
         remote_url.match %r%/([^/]+)/([^/]+?)(?:\.git)?$%
