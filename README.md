@@ -38,6 +38,9 @@ If you use multiple Bitbucket Server, define profile(s) and specify it.
     sah browse PROJECT/REPO
     # browse PROJECT/REPO
 
+    sah browse --upstream
+    # browse upstream of current repository
+
     sah browse --branch
     # browse branch list in current repository
 
